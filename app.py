@@ -30,7 +30,7 @@ class_names = [
 st.title("🌱 Plant Disease Detection")
 st.write("Built by Kidus Alamrew")
 
-st.write("Upload a plant leaf image to detect disease (NOTICE:it is better for the background of the image to be 'black'!")
+st.write("Upload a plant leaf image to detect disease (NOTICE:it is better for the background of the image to be 'black'!)")
 
 uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 
@@ -356,7 +356,7 @@ if uploaded_file is not None:
                 "⚠️ Disease not found. Please check the spelling or format.")
             st.markdown("### 🧠 Response:")
             st.markdown(response)
-        
+st.write("Support and reach for us either for help or appreciation!")
 
 
 
