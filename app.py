@@ -10,7 +10,7 @@ os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 # Load model
-model = load_model(r"C:\Users\hp\Desktop\plant desease detection\models\my_model.h5")
+model = load_model("models\my_model.h5")
 
 # Define class names (update these for your dataset)
 class_names = [
