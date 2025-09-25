@@ -59,289 +59,289 @@ if uploaded_file is not None:
 
     # ---- Disease response dictionary ----
     disease_responses = {
-    "Apple_scab": """
-    **Diagnosis:** Apple Scab is a fungal disease caused by *Venturia inaequalis*.
+        "Apple___Apple_scab": """
+        **Diagnosis:** Apple Scab is a fungal disease caused by *Venturia inaequalis*.
 
-    **Cause:** High humidity and wet conditions promote fungal spore growth.
+        **Cause:** High humidity and wet conditions promote fungal spore growth.
 
-    **Treatment:** Apply fungicides such as captan or mancozeb during early stages. Remove fallen leaves and infected fruit.
+        **Treatment:** Apply fungicides such as captan or mancozeb during early stages. Remove fallen leaves and infected fruit.
 
-    **Prevention:** Ensure proper pruning for airflow, avoid overhead watering, and clear debris around the tree base.
-    """,
+        **Prevention:** Ensure proper pruning for airflow, avoid overhead watering, and clear debris around the tree base.
+        """,
 
-    "Apple_black_rot": """
-    **Diagnosis:** Black Rot is caused by the fungus *Botryosphaeria obtusa*.
+        "Apple___Black_rot": """
+        **Diagnosis:** Black Rot is caused by the fungus *Botryosphaeria obtusa*.
 
-    **Cause:** Wet, warm weather and infected pruning wounds.
+        **Cause:** Wet, warm weather and infected pruning wounds.
 
-    **Treatment:** Prune out cankers and apply fungicide during growing season.
+        **Treatment:** Prune out cankers and apply fungicide during growing season.
 
-    **Prevention:** Sanitize tools, remove mummified fruits, and improve tree spacing.
-    """,
+        **Prevention:** Sanitize tools, remove mummified fruits, and improve tree spacing.
+        """,
 
-    "Apple_cedar_apple_rust": """
-    **Diagnosis:** Cedar Apple Rust is a fungal disease linked to both apple and cedar trees.
+        "Apple___Cedar_apple_rust": """
+        **Diagnosis:** Cedar Apple Rust is a fungal disease linked to both apple and cedar trees.
 
-    **Cause:** Caused by *Gymnosporangium juniperi-virginianae*, spreads between cedar and apple trees.
+        **Cause:** Caused by *Gymnosporangium juniperi-virginianae*, spreads between cedar and apple trees.
 
-    **Treatment:** Apply fungicides during early growth stages. Remove nearby cedar trees if possible.
+        **Treatment:** Apply fungicides during early growth stages. Remove nearby cedar trees if possible.
 
-    **Prevention:** Use rust-resistant varieties and avoid planting near cedars.
-    """,
+        **Prevention:** Use rust-resistant varieties and avoid planting near cedars.
+        """,
 
-    "Apple_healthy": "✅ The apple plant is healthy. Continue proper watering, pruning, and disease monitoring.",
+        "Apple___healthy": "✅ The apple plant is healthy. Continue proper watering, pruning, and disease monitoring.",
 
-    "Blueberry_healthy": "✅ The blueberry plant is healthy. Maintain well-drained, acidic soil and avoid waterlogging.",
+        "Blueberry___healthy": "✅ The blueberry plant is healthy. Maintain well-drained, acidic soil and avoid waterlogging.",
 
-    "Cherry_powdery_mildew": """
-    **Diagnosis:** Powdery mildew is a fungal infection that forms a white powder on leaves.
+        "Cherry___Powdery_mildew": """
+        **Diagnosis:** Powdery mildew is a fungal infection that forms a white powder on leaves.
 
-    **Cause:** High humidity, poor air circulation.
+        **Cause:** High humidity, poor air circulation.
 
-    **Treatment:** Apply sulfur-based or neem oil sprays.
+        **Treatment:** Apply sulfur-based or neem oil sprays.
 
-    **Prevention:** Prune regularly and avoid watering late in the day.
-    """,
+        **Prevention:** Prune regularly and avoid watering late in the day.
+        """,
 
-    "Cherry_healthy": "✅ The cherry plant is healthy. Monitor for signs of mildew or rot during humid seasons.",
+        "Cherry___healthy": "✅ The cherry plant is healthy. Monitor for signs of mildew or rot during humid seasons.",
 
-    "Corn_gray_leaf_spot": """
-    **Diagnosis:** Gray Leaf Spot is caused by *Cercospora zeae-maydis*.
+        "Corn___Cercospora_leaf_spot Gray_leaf_spot": """
+        **Diagnosis:** Gray Leaf Spot is caused by *Cercospora zeae-maydis*.
 
-    **Cause:** Warm, humid environments with high leaf moisture.
+        **Cause:** Warm, humid environments with high leaf moisture.
 
-    **Treatment:** Use fungicides like strobilurins or triazoles.
+        **Treatment:** Use fungicides like strobilurins or triazoles.
 
-    **Prevention:** Rotate crops and select resistant hybrids.
-    """,
+        **Prevention:** Rotate crops and select resistant hybrids.
+        """,
 
-    "Corn_common_rust": """
-    **Diagnosis:** Common Rust is caused by *Puccinia sorghi*.
+        "Corn___Common_rust": """
+        **Diagnosis:** Common Rust is caused by *Puccinia sorghi*.
 
-    **Cause:** Spread by wind-borne spores under moist conditions.
+        **Cause:** Spread by wind-borne spores under moist conditions.
 
-    **Treatment:** Use fungicides if infection is severe.
+        **Treatment:** Use fungicides if infection is severe.
 
-    **Prevention:** Plant resistant corn varieties.
-    """,
+        **Prevention:** Plant resistant corn varieties.
+        """,
 
-    "Corn_northern_leaf_blight": """
-    **Diagnosis:** Northern Leaf Blight is caused by *Exserohilum turcicum*, leads to cigar-shaped lesions.
+        "Corn___Northern_Leaf_Blight": """
+        **Diagnosis:** Northern Leaf Blight is caused by *Exserohilum turcicum*, leads to cigar-shaped lesions.
 
-    **Cause:** Prolonged wetness and mild temperatures.
+        **Cause:** Prolonged wetness and mild temperatures.
 
-    **Treatment:** Apply fungicides early in disease cycle.
+        **Treatment:** Apply fungicides early in disease cycle.
 
-    **Prevention:** Rotate crops, use disease-resistant hybrids.
-    """,
+        **Prevention:** Rotate crops, use disease-resistant hybrids.
+        """,
 
-    "Corn_healthy": "✅ The corn plant is healthy. Monitor for discoloration and maintain fertilizer schedule.",
+        "Corn___healthy": "✅ The corn plant is healthy. Monitor for discoloration and maintain fertilizer schedule.",
 
-    "Grape_black_rot": """
-    **Diagnosis:** Black rot is a common fungal disease in grapes caused by *Guignardia bidwellii*.
+        "Grape___Black_rot": """
+        **Diagnosis:** Black rot is a common fungal disease in grapes caused by *Guignardia bidwellii*.
 
-    **Cause:** Wet weather and poor airflow.
+        **Cause:** Wet weather and poor airflow.
 
-    **Treatment:** Apply fungicides and remove infected berries and leaves.
+        **Treatment:** Apply fungicides and remove infected berries and leaves.
 
-    **Prevention:** Train vines properly and prune regularly.
-    """,
+        **Prevention:** Train vines properly and prune regularly.
+        """,
 
-    "Grape_black_measles": """
-    **Diagnosis:** Esca (Black Measles) is a trunk disease caused by multiple fungi.
+        "Grape___Esca_(Black_Measles)": """
+        **Diagnosis:** Esca (Black Measles) is a trunk disease caused by multiple fungi.
 
-    **Cause:** Enters through pruning wounds, worsened by drought stress.
+        **Cause:** Enters through pruning wounds, worsened by drought stress.
 
-    **Treatment:** No cure, remove infected vines.
+        **Treatment:** No cure, remove infected vines.
 
-    **Prevention:** Prune carefully and avoid stress to vines.
-    """,
+        **Prevention:** Prune carefully and avoid stress to vines.
+        """,
 
-    "Grape_leaf_blight": """
-    **Diagnosis:** Leaf Blight causes dark, angular spots on grape leaves.
+        "Grape___Leaf_blight_(Isariopsis_Leaf_Spot)": """
+        **Diagnosis:** Leaf Blight causes dark, angular spots on grape leaves.
 
-    **Cause:** Caused by *Isariopsis clavispora*, thrives in wet environments.
+        **Cause:** Caused by *Isariopsis clavispora*, thrives in wet environments.
 
-    **Treatment:** Use copper fungicides and remove infected leaves.
+        **Treatment:** Use copper fungicides and remove infected leaves.
 
-    **Prevention:** Improve air circulation, reduce overhead irrigation.
-    """,
+        **Prevention:** Improve air circulation, reduce overhead irrigation.
+        """,
 
-    "Grape_healthy": "✅ The grape plant is healthy. Continue proper training and disease monitoring.",
+        "Grape___healthy": "✅ The grape plant is healthy. Continue proper training and disease monitoring.",
 
-    "Orange_haunglongbing": """
-    **Diagnosis:** Huanglongbing (HLB), or citrus greening, is caused by a bacterium spread by psyllids.
+        "Orange___Haunglongbing_(Citrus_greening)": """
+        **Diagnosis:** Huanglongbing (HLB), or citrus greening, is caused by a bacterium spread by psyllids.
 
-    **Cause:** Insect vector *Diaphorina citri* transmits the bacteria.
+        **Cause:** Insect vector *Diaphorina citri* transmits the bacteria.
 
-    **Treatment:** No cure. Remove infected trees.
+        **Treatment:** No cure. Remove infected trees.
 
-    **Prevention:** Control psyllids and plant resistant rootstocks.
-    """,
+        **Prevention:** Control psyllids and plant resistant rootstocks.
+        """,
 
-    "Peach_bacterial_spot": """
-    **Diagnosis:** Bacterial spot causes lesions on leaves and fruit.
+        "Peach___Bacterial_spot": """
+        **Diagnosis:** Bacterial spot causes lesions on leaves and fruit.
 
-    **Cause:** Caused by *Xanthomonas campestris*, thrives in rainy weather.
+        **Cause:** Caused by *Xanthomonas campestris*, thrives in rainy weather.
 
-    **Treatment:** Copper sprays and resistant cultivars.
+        **Treatment:** Copper sprays and resistant cultivars.
 
-    **Prevention:** Avoid overhead irrigation and prune for airflow.
-    """,
+        **Prevention:** Avoid overhead irrigation and prune for airflow.
+        """,
 
-    "Peach_healthy": "✅ The peach tree is healthy. Monitor during wet seasons for leaf spots or fruit pitting.",
+        "Peach___healthy": "✅ The peach tree is healthy. Monitor during wet seasons for leaf spots or fruit pitting.",
 
-    "Pepper_bacterial_spot": """
-    **Diagnosis:** Bacterial spot affects leaves and fruit of bell peppers.
+        "Pepper,_bell___Bacterial_spot": """
+        **Diagnosis:** Bacterial spot affects leaves and fruit of bell peppers.
 
-    **Cause:** Spread by contaminated tools and wet conditions.
+        **Cause:** Spread by contaminated tools and wet conditions.
 
-    **Treatment:** Use copper-based sprays.
+        **Treatment:** Use copper-based sprays.
 
-    **Prevention:** Avoid working with wet plants, sanitize tools.
-    """,
+        **Prevention:** Avoid working with wet plants, sanitize tools.
+        """,
 
-    "Pepper_healthy": "✅ The pepper plant is healthy. Maintain warm, dry soil and avoid splash-back using mulch.",
+        "Pepper,_bell___healthy": "✅ The pepper plant is healthy. Maintain warm, dry soil and avoid splash-back using mulch.",
 
-    "Potato_early_blight": """
-    **Diagnosis:** Early blight is caused by *Alternaria solani*.
+        "Potato___Early_blight": """
+        **Diagnosis:** Early blight is caused by *Alternaria solani*.
 
-    **Cause:** Warm temperatures and humidity.
+        **Cause:** Warm temperatures and humidity.
 
-    **Treatment:** Use chlorothalonil or mancozeb sprays.
+        **Treatment:** Use chlorothalonil or mancozeb sprays.
 
-    **Prevention:** Rotate crops, avoid overhead watering.
-    """,
+        **Prevention:** Rotate crops, avoid overhead watering.
+        """,
 
-    "Potato_healthy": "✅ The potato plant is healthy. Hill soil around stems and avoid waterlogging.",
+        "Potato___Late_blight": """
+        **Diagnosis:** Late blight is caused by *Phytophthora infestans*.
 
-    "Potato_late_blight": """
-    **Diagnosis:** Late blight is caused by *Phytophthora infestans*.
+        **Cause:** Cool, wet conditions.
 
-    **Cause:** Cool, wet conditions.
+        **Treatment:** Apply fungicides such as cymoxanil.
 
-    **Treatment:** Apply fungicides such as cymoxanil.
+        **Prevention:** Remove infected plants immediately and rotate crops.
+        """,
 
-    **Prevention:** Remove infected plants immediately and rotate crops.
-    """,
+        "Potato___healthy": "✅ The potato plant is healthy. Hill soil around stems and avoid waterlogging.",
 
-    "Raspberry_healthy": "✅ The raspberry plant is healthy. Mulch properly and prune regularly.",
+        "Raspberry___healthy": "✅ The raspberry plant is healthy. Mulch properly and prune regularly.",
 
-    "Soybean_healthy": "✅ The soybean plant is healthy. Check for aphids and fungal symptoms during humid weather.",
+        "Soybean___healthy": "✅ The soybean plant is healthy. Check for aphids and fungal symptoms during humid weather.",
 
-    "Squash_powdery_mildew": """
-    **Diagnosis:** Powdery mildew is caused by *Podosphaera xanthii*.
+        "Squash___Powdery_mildew": """
+        **Diagnosis:** Powdery mildew is caused by *Podosphaera xanthii*.
 
-    **Cause:** Dry days followed by humid nights.
+        **Cause:** Dry days followed by humid nights.
 
-    **Treatment:** Apply sulfur or neem oil-based sprays.
+        **Treatment:** Apply sulfur or neem oil-based sprays.
 
-    **Prevention:** Plant in sunny areas and space properly.
-    """,
+        **Prevention:** Plant in sunny areas and space properly.
+        """,
 
-    "Strawberry_healthy": "✅ The strawberry plant is healthy. Maintain spacing and moist (not wet) soil.",
+        "Strawberry___Leaf_scorch": """
+        **Diagnosis:** Leaf scorch is caused by fungal pathogens.
 
-    "Strawberry_leaf_scorch": """
-    **Diagnosis:** Leaf scorch is caused by fungal pathogens.
+        **Cause:** High humidity and poor air movement.
 
-    **Cause:** High humidity and poor air movement.
+        **Treatment:** Use fungicides and remove infected leaves.
 
-    **Treatment:** Use fungicides and remove infected leaves.
+        **Prevention:** Avoid overcrowding and improve drainage.
+        """,
 
-    **Prevention:** Avoid overcrowding and improve drainage.
-    """,
+        "Strawberry___healthy": "✅ The strawberry plant is healthy. Maintain spacing and moist (not wet) soil.",
 
-    "Tomato_bacterial_spot": """
-    **Diagnosis:** Bacterial spot causes black lesions on leaves and fruit.
+        "Tomato___Bacterial_spot": """
+        **Diagnosis:** Bacterial spot causes black lesions on leaves and fruit.
 
-    **Cause:** Wet, warm conditions.
+        **Cause:** Wet, warm conditions.
 
-    **Treatment:** Copper-based fungicides.
+        **Treatment:** Copper-based fungicides.
 
-    **Prevention:** Use clean seeds and avoid overhead watering.
-    """,
+        **Prevention:** Use clean seeds and avoid overhead watering.
+        """,
 
-    "Tomato_early_blight": """
-    **Diagnosis:** Early blight is caused by *Alternaria solani*.
+        "Tomato___Early_blight": """
+        **Diagnosis:** Early blight is caused by *Alternaria solani*.
 
-    **Cause:** Poor air circulation and leaf wetness.
+        **Cause:** Poor air circulation and leaf wetness.
 
-    **Treatment:** Use mancozeb or chlorothalonil sprays.
+        **Treatment:** Use mancozeb or chlorothalonil sprays.
 
-    **Prevention:** Rotate crops and remove infected debris.
-    """,
+        **Prevention:** Rotate crops and remove infected debris.
+        """,
 
-    "Tomato_late_blight": """
-    **Diagnosis:** Late blight is caused by *Phytophthora infestans*.
+        "Tomato___Late_blight": """
+        **Diagnosis:** Late blight is caused by *Phytophthora infestans*.
 
-    **Cause:** Cool, moist conditions.
+        **Cause:** Cool, moist conditions.
 
-    **Treatment:** Apply fungicides quickly and remove affected plants.
+        **Treatment:** Apply fungicides quickly and remove affected plants.
 
-    **Prevention:** Avoid overhead watering and use resistant varieties.
-    """,
+        **Prevention:** Avoid overhead watering and use resistant varieties.
+        """,
 
-    "Tomato_leaf_mold": """
-    **Diagnosis:** Leaf mold is caused by *Fulvia fulva*.
+        "Tomato___Leaf_Mold": """
+        **Diagnosis:** Leaf mold is caused by *Fulvia fulva*.
 
-    **Cause:** High humidity in greenhouses or shaded areas.
+        **Cause:** High humidity in greenhouses or shaded areas.
 
-    **Treatment:** Use fungicides and increase ventilation.
+        **Treatment:** Use fungicides and increase ventilation.
 
-    **Prevention:** Prune regularly and avoid dense foliage.
-    """,
+        **Prevention:** Prune regularly and avoid dense foliage.
+        """,
 
-    "Tomato_septoria_leaf_spot": """
-    **Diagnosis:** Caused by *Septoria lycopersici*, shows small spots on leaves.
+        "Tomato___Septoria_leaf_spot": """
+        **Diagnosis:** Caused by *Septoria lycopersici*, shows small spots on leaves.
 
-    **Cause:** High humidity, wet foliage.
+        **Cause:** High humidity, wet foliage.
 
-    **Treatment:** Use chlorothalonil-based fungicides.
+        **Treatment:** Use chlorothalonil-based fungicides.
 
-    **Prevention:** Space plants well and avoid overhead watering.
-    """,
+        **Prevention:** Space plants well and avoid overhead watering.
+        """,
 
-    "Tomato_spider_mites_two-spotted_spider_mite": """
-    **Diagnosis:** Two-spotted spider mite infestation causes stippling and webbing on leaves.
+        "Tomato___Spider_mites Two-spotted_spider_mite": """
+        **Diagnosis:** Two-spotted spider mite infestation causes stippling and webbing on leaves.
 
-    **Cause:** Dry conditions, lack of predators.
+        **Cause:** Dry conditions, lack of predators.
 
-    **Treatment:** Use miticides or neem oil.
+        **Treatment:** Use miticides or neem oil.
 
-    **Prevention:** Maintain moderate humidity, encourage natural predators, rotate crops.
-    """,
+        **Prevention:** Maintain moderate humidity, encourage natural predators, rotate crops.
+        """,
 
-    "Tomato_target_spot": """
-    **Diagnosis:** Target spot is caused by *Corynespora cassiicola*.
+        "Tomato___Target_Spot": """
+        **Diagnosis:** Target spot is caused by *Corynespora cassiicola*.
 
-    **Cause:** Warm, moist conditions and poor airflow.
+        **Cause:** Warm, moist conditions and poor airflow.
 
-    **Treatment:** Apply appropriate fungicides like chlorothalonil early in infection.
+        **Treatment:** Apply appropriate fungicides like chlorothalonil early in infection.
 
-    **Prevention:** Increase plant spacing, ensure good drainage, and remove affected leaves.
-    """,
+        **Prevention:** Increase plant spacing, ensure good drainage, and remove affected leaves.
+        """,
 
-    "Tomato_mosaic_virus": """
-    **Diagnosis:** Tomato Mosaic Virus leads to mottled or curled leaves and deformed fruits.
+        "Tomato___Tomato_Yellow_Leaf_Curl_Virus": """
+        **Diagnosis:** Tomato Yellow Leaf Curl Virus (TYLCV) causes leaf curling, yellowing, and stunted growth.
 
-    **Cause:** Spread by contaminated tools, hands, or infected seeds.
+        **Cause:** Spread by whiteflies, especially in hot and dry climates.
 
-    **Treatment:** No chemical cure — remove infected plants and disinfect tools.
+        **Treatment:** No cure — infected plants should be removed immediately.
 
-    **Prevention:** Wash hands before handling, sterilize equipment, and avoid tobacco exposure (virus can be carried in smoke).
-    """,
+        **Prevention:** Use whitefly-resistant tomato varieties, apply insecticidal soap, and use physical barriers like nets.
+        """,
 
-    "Tomato_yellow_leaf_curl_virus": """
-    **Diagnosis:** Tomato Yellow Leaf Curl Virus (TYLCV) causes leaf curling, yellowing, and stunted growth.
+        "Tomato___Tomato_mosaic_virus": """
+        **Diagnosis:** Tomato Mosaic Virus leads to mottled or curled leaves and deformed fruits.
 
-    **Cause:** Spread by whiteflies, especially in hot and dry climates.
+        **Cause:** Spread by contaminated tools, hands, or infected seeds.
 
-    **Treatment:** No cure — infected plants should be removed immediately.
+        **Treatment:** No chemical cure — remove infected plants and disinfect tools.
 
-    **Prevention:** Use whitefly-resistant varieties, apply insecticidal soap, and use physical barriers like nets.
-    """,
+        **Prevention:** Wash hands before handling, sterilize equipment, and avoid smoking near plants (tobacco can carry the virus).
+        """,
 
-    "Tomato_healthy": "✅ The tomato plant is healthy. Keep monitoring for early signs of pests or disease. Ensure good air circulation and balanced fertilization."
+        "Tomato___healthy": "✅ The tomato plant is healthy. Keep monitoring for early signs of pests or disease. Ensure good air circulation and balanced fertilization."
 
 
     }
