@@ -1,3 +1,9 @@
+ HEAD
+flask
+flask-cors
+tensorflow
+numpy
+pillow
 flask
 flask-cors
 tensorflow
