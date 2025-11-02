@@ -1,4 +1,4 @@
-
+joblib
 flask
 flask-cors
 tensorflow
@@ -9,4 +9,3 @@ flask-cors
 tensorflow
 numpy
 pillow
-openai
