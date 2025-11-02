@@ -5,6 +5,11 @@ import streamlit as st
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 from PIL import Image
+import os
+import joblib
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.linear_model import LinearRegression
+
 # Suppress TensorFlow warnings
 tab1, tab2,tab3= st.tabs(["PDDM", "CYPM", "About"])
 with tab1:
@@ -362,10 +367,7 @@ with tab2:
     import streamlit as st
     import numpy as np
     import joblib
-    from sklearn.preprocessing import StandardScaler, OneHotEncoder
-    from sklearn.linear_model import LinearRegression  # or the model class you used
-    # Load your trained model
-
+ 
     # get the path relative to app.py
     model_path = os.path.join(os.path.dirname(__file__), "model2.pkl")
     model = joblib.load(model_path)
@@ -411,6 +413,34 @@ with tab2:
     if st.button("Predict Crop Yield"):
         prediction = model.predict(input_data)
         st.success(f"🌱 Estimated Crop Yield: **{prediction[0]:.2f} tons/hectare**")
+with tab3:
+    about_text = """
+    ## About This App
+
+    Welcome to the **Crop Yield Prediction & Plant Disease Detection System** — a smart, AI-powered platform designed to help farmers, agronomists, and agriculture enthusiasts make data-driven decisions for healthier crops and better yields.
+
+    ### Crop Yield Prediction
+    Using advanced **machine learning models**, this feature predicts the expected yield of your crops based on inputs like soil parameters, weather conditions, and crop type. It helps farmers:
+    - Plan better for harvests
+    - Optimize resource usage (fertilizers, water, labor)
+    - Make informed decisions for sustainable farming
+
+    ### Plant Disease Detection
+    This feature leverages **computer vision and deep learning** to identify common diseases in crops from images of leaves. Simply upload a photo of your plant, and the system will:
+    - Detect potential diseases accurately
+    - Suggest preventive measures and best practices
+    - Reduce crop loss by enabling timely intervention
+
+    ### Why Use This Platform
+    - **AI-Powered:** Built with modern machine learning and computer vision techniques.
+    - **User-Friendly:** No technical expertise required — just enter your data or upload a leaf image.
+    - **Reliable Insights:** Provides actionable information to improve crop health and yield.
+    - **Sustainable Agriculture:** Supports data-driven, eco-friendly farming practices.
+
+    **Empowering farmers with technology, one crop at a time.**
+    """
+
+    st.markdown(about_text)
 
 
 
