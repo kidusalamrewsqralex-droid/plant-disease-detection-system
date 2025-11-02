@@ -362,7 +362,8 @@ with tab2:
     import streamlit as st
     import numpy as np
     import joblib
-
+    from sklearn.preprocessing import StandardScaler, OneHotEncoder
+    from sklearn.linear_model import LinearRegression  # or the model class you used
     # Load your trained model
 
     # get the path relative to app.py
