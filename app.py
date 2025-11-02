@@ -365,7 +365,9 @@ with tab2:
 
     # Load your trained model
 
-    model = joblib.load(r"C:\Users\hp\Desktop\plant disease detection\model2.pkl")
+    # get the path relative to app.py
+    model_path = os.path.join(os.path.dirname(__file__), "model2.pkl")
+    model = joblib.load(model_path)
 
     st.title("🌾 Crop Yield Prediction App")
 
