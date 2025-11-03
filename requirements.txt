@@ -1,7 +1,3 @@
-streamlit==1.30.0
-tensorflow-cpu==2.13.0
-keras==2.13.1
-pillow==10.0.0
-numpy==1.26.0
-scikit-learn==1.3.0
-joblib==1.3.2
+version https://git-lfs.github.com/spec/v1
+oid sha256:0555fa77d408fb219818a7a7afc179a4de45edf8c743794969a9f4e28e445a89
+size 118
