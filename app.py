@@ -17,27 +17,44 @@ with tab1:
     os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
     # Load model
-    model = load_model("models/my_model.h5")
+    import streamlit as st
+    import tensorflow as tf
+    from tensorflow.keras.preprocessing import image
+    from PIL import Image
+    import numpy as np
+    import os
 
-    # Define class names (update these for your dataset)
+
+    # ✅ Cache the model so Streamlit doesn't reload it each time
+    @st.cache_resource
+    def load_model():
+        model_path = os.path.join(os.path.dirname(__file__), "models", "model3.keras")
+        model = tf.keras.models.load_model(model_path)
+        return model
+
+
+    # Load model once
+    model = load_model()
+
+    # Define class names (update these if needed)
     class_names = [
         'Apple___Apple_scab', 'Apple___Black_rot', 'Apple___Cedar_apple_rust', 'Apple___healthy', 'Blueberry___healthy',
         'Cherry___healthy', 'Cherry___Powdery_mildew', 'Corn___Cercospora_leaf_spot Gray_leaf_spot',
-        'Corn___Common_rust',
-        'Corn___healthy', 'Corn___Northern_Leaf_Blight', 'Grape___Black_rot', 'Grape___Esca_(Black_Measles)',
-        'Grape___healthy', 'Grape___Leaf_blight_(Isariopsis_Leaf_Spot)', 'Orange___Haunglongbing_(Citrus_greening)',
-        'Peach___Bacterial_spot', 'Peach___healthy', 'Pepper,_bell___Bacterial_spot', 'Pepper,_bell___healthy',
-        'Potato___Early_blight', 'Potato___healthy', 'Potato___Late_blight', 'Raspberry___healthy', 'Soybean___healthy',
-        'Squash___Powdery_mildew', 'Strawberry___healthy', 'Strawberry___Leaf_scorch', 'Tomato___Bacterial_spot',
-        'Tomato___Early_blight', 'Tomato___healthy', 'Tomato___Late_blight', 'Tomato___Leaf_Mold',
-        'Tomato___Septoria_leaf_spot', 'Tomato___Spider_mites Two-spotted_spider_mite', 'Tomato___Target_Spot',
-        'Tomato___Tomato_mosaic_virus', 'Tomato___Tomato_Yellow_Leaf_Curl_Virus']
+        'Corn___Common_rust', 'Corn___healthy', 'Corn___Northern_Leaf_Blight', 'Grape___Black_rot',
+        'Grape___Esca_(Black_Measles)', 'Grape___healthy', 'Grape___Leaf_blight_(Isariopsis_Leaf_Spot)',
+        'Orange___Haunglongbing_(Citrus_greening)', 'Peach___Bacterial_spot', 'Peach___healthy',
+        'Pepper,_bell___Bacterial_spot', 'Pepper,_bell___healthy', 'Potato___Early_blight', 'Potato___healthy',
+        'Potato___Late_blight', 'Raspberry___healthy', 'Soybean___healthy', 'Squash___Powdery_mildew',
+        'Strawberry___healthy', 'Strawberry___Leaf_scorch', 'Tomato___Bacterial_spot', 'Tomato___Early_blight',
+        'Tomato___healthy', 'Tomato___Late_blight', 'Tomato___Leaf_Mold', 'Tomato___Septoria_leaf_spot',
+        'Tomato___Spider_mites Two-spotted_spider_mite', 'Tomato___Target_Spot', 'Tomato___Tomato_mosaic_virus',
+        'Tomato___Tomato_Yellow_Leaf_Curl_Virus'
+    ]
 
+    # Streamlit app UI
     st.title("🌱 Green Thumb")
     st.write("Built by Kidus Alamrew")
-
-    st.write(
-        "Upload a plant leaf image to detect disease (NOTICE:it is better for the background of the image to be 'black'!)")
+    st.write("Upload a plant leaf image to detect disease (TIP: use a black background for best results!)")
 
     uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 
@@ -50,13 +67,14 @@ with tab1:
         x = image.img_to_array(img)
         x = np.expand_dims(x, axis=0) / 255.0
 
-        # Predict
-        preds = model.predict(x)
-        pred_class = class_names[np.argmax(preds)]
-        confidence = np.max(preds)
+        with st.spinner("🔍 Analyzing image..."):
+            preds = model.predict(x)
+            pred_class = class_names[np.argmax(preds)]
+            confidence = np.max(preds)
 
-        st.write(f"### Prediction: **{pred_class}**")
-        st.write(f"Confidence: **{confidence:.2f}**")
+        st.success(f"✅ **Prediction:** {pred_class}")
+        st.write(f"**Confidence:** {confidence:.2f}")
+
         #########################################
 
         # 🧠 Manual disease response database
