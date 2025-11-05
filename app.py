@@ -5,11 +5,11 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing import image
 from PIL import Image
 import joblib
-
+from sklearn.preprocessing import StandardScaler
 # -------------------------
 # Tabs
 # -------------------------
-tab1, tab2, tab3 = st.tabs(["Green Thumb", "CYPM", "About"])
+tab1, tab2,tab3 = st.tabs(["Green Thumb", "CYPM", "About"])
 
 # -------------------------
 # Tab 1: Plant Disease Detection
@@ -340,58 +340,113 @@ with tab1:
 # Tab 2: Crop Yield Prediction
 # -------------------------
 with tab2:
-    st.title("🌾 Crop Yield Prediction")
-    st.write("Enter field details to estimate crop yield (tons/hectare).")
+    import os
+    import streamlit as st
+    import joblib
+    import numpy as np
 
-    MODEL2_PATH = os.path.join(os.path.dirname(__file__), "models", "model2.pkl")
+    # --------------------------
+    # Paths to model files
+    # --------------------------
+    BASE_DIR = os.path.dirname(__file__)
+    MODEL_PATH = os.path.join(BASE_DIR, "models", "crop_yield_model.pkl")
+    SCALER_PATH = os.path.join(BASE_DIR, "models", "scaler.pkl")
+    ENCODERS_PATH = os.path.join(BASE_DIR, "models", "label_encoders.pkl")
 
 
+    # --------------------------
+    # Load models, scaler, encoders
+    # --------------------------
     @st.cache_resource
-    def load_yield_model():
-        if not os.path.exists(MODEL2_PATH):
-            st.error(f"Model file not found at {MODEL2_PATH}")
-            return None
+    def load_models():
+        missing_files = [p for p in [MODEL_PATH, SCALER_PATH, ENCODERS_PATH] if not os.path.exists(p)]
+        if missing_files:
+            st.error(f"❌ Missing model files: {', '.join(os.path.basename(f) for f in missing_files)}")
+            return None, None, None
         try:
-            return joblib.load(MODEL2_PATH)
+            model = joblib.load(MODEL_PATH)
+            scaler = joblib.load(SCALER_PATH)
+            encoders = joblib.load(ENCODERS_PATH)
+            return model, scaler, encoders
         except Exception as e:
-            st.error(f"Error loading crop yield model: {e}")
-            return None
+            st.error(f"❌ Error loading models: {e}")
+            return None, None, None
 
-    yield_model = load_yield_model()
 
-    # Input fields
-    region = st.selectbox("Region", ["West","South","North","East"])
-    soil = st.selectbox("Soil Type", ["Sandy","Clay","Loam","Silt","Peaty","Chalky"])
-    crop = st.selectbox("Crop", ["Cotton","Rice","Barley","Soybean","Wheat","Maize"])
-    weather = st.selectbox("Weather", ["Cloudy","Rainy","Sunny"])
-    rainfall = st.number_input("Rainfall (mm)", min_value=0.0, step=0.1)
-    temperature = st.number_input("Temperature (°C)", min_value=-10.0, max_value=60.0, step=0.1)
-    days_to_harvest = st.number_input("Days to Harvest", min_value=0.0, step=1.0)
-    fertilizer = st.toggle("Fertilizer Used")
-    irrigation = st.toggle("Irrigation Used")
+    model, scaler, encoders = load_models()
+    if model is None or scaler is None or encoders is None:
+        st.stop()
 
-    # Maps
-    region_map = {"West":3,"South":2,"North":1,"East":0}
-    soil_map = {"Sandy":4,"Clay":1,"Loam":2,"Silt":5,"Peaty":3,"Chalky":0}
-    crop_map = {"Cotton":1,"Rice":3,"Barley":0,"Soybean":4,"Wheat":5,"Maize":2}
-    weather_map = {"Cloudy":0,"Rainy":1,"Sunny":2}
+    # ================================
+    # 🌾 Streamlit UI
+    # ================================
+    st.set_page_config(page_title="Crop Yield Prediction", page_icon="🌱", layout="centered")
+    st.title("🌾 Crop Yield Prediction App")
+    st.write("Predict estimated crop yield based on environmental and farming conditions.")
 
-    input_data = np.array([[
-        region_map[region], soil_map[soil], crop_map[crop],
-        rainfall, temperature, int(fertilizer), int(irrigation),
-        weather_map[weather], days_to_harvest
-    ]])
+    # -------------------------------
+    # 🧠 Input Features
+    # -------------------------------
+    region = st.selectbox("Region", encoders["Region"].classes_)
+    soil_type = st.selectbox("Soil Type", encoders["Soil_Type"].classes_)
+    crop = st.selectbox("Crop", encoders["Crop"].classes_)
+    weather = st.selectbox("Weather Condition", encoders["Weather_Condition"].classes_)
 
-    if st.button("Predict Crop Yield"):
-        if yield_model:
-            prediction = yield_model.predict(input_data)
-            st.success(f"Estimated Crop Yield: {prediction[0]:.2f} tons/hectare")
-        else:
-            st.warning("Crop yield model not loaded.")
+    # ✅ Toggles for Boolean Inputs
+    fertilizer_used = st.toggle("Fertilizer Used?")
+    irrigation_used = st.toggle("Irrigation Used?")
 
-# -------------------------
-# Tab 3: About
-# -------------------------
+    fertilizer_value = "Yes" if fertilizer_used else "No"
+    irrigation_value = "Yes" if irrigation_used else "No"
+
+    # 🌦️ Numeric Inputs
+    rainfall = st.number_input("Rainfall (mm)", min_value=0.0, step=1.0)
+    temperature = st.number_input("Temperature (°C)", min_value=0.0, step=0.1)
+    harvest = st.number_input("Days to harvest", min_value=0.0, step=0.1)
+
+    # -------------------------------
+    # 🧩 Encode + Scale Features
+    # -------------------------------
+    try:
+        # Encode categorical features
+        region_encoded = encoders["Region"].transform([region])[0]
+        soil_encoded = encoders["Soil_Type"].transform([soil_type])[0]
+        crop_encoded = encoders["Crop"].transform([crop])[0]
+        weather_encoded = encoders["Weather_Condition"].transform([weather])[0]
+        fertilizer_encoded = encoders["Fertilizer_Used"].transform([fertilizer_value])[0]
+        irrigation_encoded = encoders["Irrigation_Used"].transform([irrigation_value])[0]
+
+        # Scale numeric features
+        numeric_features = np.array([[rainfall, temperature, harvest]])
+        numeric_features_scaled = scaler.transform(numeric_features)
+
+        # Combine categorical + scaled numeric features in training order
+        features = np.array([[
+            region_encoded,
+            soil_encoded,
+            crop_encoded,
+            fertilizer_encoded,
+            irrigation_encoded,
+            weather_encoded,
+            numeric_features_scaled[0][0],  # Rainfall
+            numeric_features_scaled[0][1],  # Temperature
+            numeric_features_scaled[0][2],  # Days_to_Harvest
+        ]])
+
+    except Exception as e:
+        st.error(f"Error processing features: {e}")
+        st.stop()
+
+    # -------------------------------
+    # 🚀 Prediction
+    # -------------------------------
+    if st.button("Predict Yield"):
+        try:
+            prediction = model.predict(features)[0]
+            st.success(f"🌱 Estimated Crop Yield: **{prediction:.2f} tons/hectare**")
+        except Exception as e:
+            st.error(f"Prediction error: {e}")
+
 with tab3:
     about_text = """
     ## About This App
