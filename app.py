@@ -6,6 +6,7 @@ from tensorflow.keras.preprocessing import image
 from PIL import Image
 import joblib
 from sklearn.preprocessing import StandardScaler
+st.set_page_config(page_title="Crop Yield Prediction", page_icon="🌱", layout="centered")
 # -------------------------
 # Tabs
 # -------------------------
@@ -380,7 +381,6 @@ with tab2:
     # ================================
     # 🌾 Streamlit UI
     # ================================
-    st.set_page_config(page_title="Crop Yield Prediction", page_icon="🌱", layout="centered")
     st.title("🌾 Crop Yield Prediction App")
     st.write("Predict estimated crop yield based on environmental and farming conditions.")
 
