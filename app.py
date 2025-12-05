@@ -334,12 +334,20 @@ with tab1:
 
     uploaded_file = st.file_uploader("Upload an image of your plant:", type=["jpg", "jpeg", "png"])
 
-    if uploaded_file and model:
-        try:
-            img = Image.open(uploaded_file)
-            st.image(img, caption="Uploaded Image", use_container_width=True)
+    from PIL import Image
+    import numpy as np
+    import streamlit as st
 
-            x = preprocess_image(img)
+    if uploaded_file is not None and model is not None:
+        try:
+            # Open the image
+            img = Image.open(uploaded_file).convert("RGB")  # ensure 3 channels
+
+            # Display image safely
+            st.image(img, caption="Uploaded Image", use_column_width=True)  # alternative to use_container_width
+
+            # Preprocess
+            x = preprocess_image(img)  # make sure this returns a shape (1, H, W, 3)
 
             with st.spinner("Analyzing image..."):
                 preds = model.predict(x)
@@ -350,13 +358,13 @@ with tab1:
             st.success(f"Prediction: {pred_class}")
             st.write(f"Confidence: {confidence:.2f}")
 
+        except Exception as e:
+            st.error(f"Prediction error: {e}")
+
             # Show disease info
             with st.expander("💬 Disease Info"):
                 response = disease_responses.get(pred_class, "No additional info available.")
                 st.markdown(response)
-
-        except Exception as e:
-            st.error(f"Prediction error: {e}")
 
 # -------------------------
     # Streamlit UI
