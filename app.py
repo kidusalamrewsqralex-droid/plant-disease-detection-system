@@ -330,7 +330,7 @@ with tab1:
     # -----------------------------
     st.title("🌱 GREEN THUMB")
     st.write("Upload a leaf image and detect the plant disease.")
-    st.write("TIP: it is better for the background of the image to be 'BLACK'!")
+    st.write("TIP: it is better for the background of the image to be 'BLACK' or 'WHITE'!")
 
     uploaded_file = st.file_uploader("Upload an image of your plant:", type=["jpg", "jpeg", "png"])
 
