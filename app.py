@@ -362,9 +362,9 @@ with tab1:
             st.error(f"Prediction error: {e}")
 
             # Show disease info
-            with st.expander("💬 Disease Info"):
-                response = disease_responses.get(pred_class, "No additional info available.")
-                st.markdown(response)
+    with st.expander("💬 Disease Info"):
+        response = disease_responses.get(pred_class, "No additional info available.")
+        st.markdown(response)
 
 # -------------------------
     # Streamlit UI
@@ -648,21 +648,18 @@ with tab4:
 
     st.markdown(about_text)
     st.write("Developer: Kidus Alamrew")
-
+    
     import streamlit as st
     import urllib.parse
 
     your_email = "kidusalamrewsqralex@gmail.com"
-
     subject = urllib.parse.quote("Green hand - Support Request")
-    body = urllib.parse.quote("Hi,what do you want to know about my app, mate?")
+    body = urllib.parse.quote("Hi, what do you want to know about my app, mate?")
 
     gmail_link = f"https://mail.google.com/mail/?view=cm&fs=1&to={your_email}&su={subject}&body={body}"
 
-    if st.button("📧 Contact Developer"):
-        # Open mailto link
-        js = f"window.location.href='{gmail_link}'"
-        st.components.v1.html(f"<script>{js}</script>")
+    # Use markdown link for reliable behavior
+    st.markdown(f"[📧 Contact Developer]({gmail_link})", unsafe_allow_html=True)
 
     
 
