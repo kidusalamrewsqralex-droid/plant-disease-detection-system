@@ -353,7 +353,7 @@ with tab1:
             img = Image.open(uploaded_file).convert("RGB")
 
             # Display the image (updated parameter)
-            st.image(img, caption="Uploaded Image", use_container_width=True)
+            st.image(img, caption="Uploaded Image", use_column_width=True)
 
             # Preprocess the image
             x = preprocess_image(img)  # Make sure this returns (1, H, W, 3)
