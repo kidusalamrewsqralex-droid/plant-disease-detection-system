@@ -45,7 +45,17 @@ with tab1:
     # -----------------------------
     from tensorflow.keras.models import load_model
 
-    model = load_model("models/model.keras", compile=False)
+    import streamlit as st
+    from tensorflow.keras.models import load_model
+
+
+    @st.cache_resource
+    def load_my_model():
+        model = load_model("models/model.keras", compile=False)
+        return model
+
+
+    model = load_my_model()
 
     # Class names
     # -----------------------------
@@ -333,28 +343,29 @@ with tab1:
     st.write("TIP: it is better for the background of the image to be 'BLACK' or 'WHITE'!")
 
     uploaded_file = st.file_uploader("Upload an image of your plant:", type=["jpg", "jpeg", "png"])
-
     from PIL import Image
-    import numpy as np
     import streamlit as st
+    import numpy as np
 
     if uploaded_file is not None and model is not None:
         try:
-            # Open the image
-            img = Image.open(uploaded_file).convert("RGB")  # ensure 3 channels
+            # Open the uploaded file as a PIL image
+            img = Image.open(uploaded_file).convert("RGB")
 
-            # Display image
-            st.image(img, caption="Uploaded Image", use_column_width=True)
+            # Display the image (updated parameter)
+            st.image(img, caption="Uploaded Image", use_container_width=True)
 
-            # Preprocess
-            x = preprocess_image(img)  # returns shape (1, H, W, 3)
+            # Preprocess the image
+            x = preprocess_image(img)  # Make sure this returns (1, H, W, 3)
 
+            # Make prediction
             with st.spinner("Analyzing image..."):
                 preds = model.predict(x)
                 pred_idx = np.argmax(preds)
                 pred_class = class_names[pred_idx]
                 confidence = np.max(preds)
 
+            # Show results
             st.success(f"Prediction: {pred_class}")
             st.write(f"Confidence: {confidence:.2f}")
 
