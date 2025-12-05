@@ -45,7 +45,7 @@ with tab1:
     # -----------------------------
     from tensorflow.keras.models import load_model
 
-    model = load_model("model.keras", compile=False)
+    model = load_model("models/model.keras", compile=False)
 
     # Class names
     # -----------------------------
