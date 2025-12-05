@@ -330,7 +330,7 @@ with tab1:
     # -----------------------------
     st.title("🌱 GREEN THUMB")
     st.write("Upload a leaf image and detect the plant disease.")
-    st.write("TIP:it is better for the background of the image to be 'BLACK'! ")
+    st.write("TIP: it is better for the background of the image to be 'BLACK'!")
 
     uploaded_file = st.file_uploader("Upload an image of your plant:", type=["jpg", "jpeg", "png"])
 
@@ -343,11 +343,11 @@ with tab1:
             # Open the image
             img = Image.open(uploaded_file).convert("RGB")  # ensure 3 channels
 
-            # Display image safely
-            st.image(img, caption="Uploaded Image", use_column_width=True)  # alternative to use_container_width
+            # Display image
+            st.image(img, caption="Uploaded Image", use_column_width=True)
 
             # Preprocess
-            x = preprocess_image(img)  # make sure this returns a shape (1, H, W, 3)
+            x = preprocess_image(img)  # returns shape (1, H, W, 3)
 
             with st.spinner("Analyzing image..."):
                 preds = model.predict(x)
@@ -358,156 +358,17 @@ with tab1:
             st.success(f"Prediction: {pred_class}")
             st.write(f"Confidence: {confidence:.2f}")
 
+            # Show disease info
+            with st.expander("💬 Disease Info"):
+                response = disease_responses.get(pred_class, "No additional info available.")
+                st.markdown(response)
+
         except Exception as e:
             st.error(f"Prediction error: {e}")
 
-            # Show disease info
-    with st.expander("💬 Disease Info"):
-        response = disease_responses.get(pred_class, "No additional info available.")
-        st.markdown(response)
+with tab2:
+    st.write("pest detection model will be published soon enough!!!")
 
-# -------------------------
-    # Streamlit UI
-    # -------------------------
-
-
-'''with tab2:
-    import os
-    import sys
-    import numpy as np
-    import tensorflow as tf
-    from PIL import Image
-    import streamlit as st
-    import pandas as pd
-    import altair as alt
-
-    # ---------------------------
-    # CONFIG
-    # ---------------------------
-    MODEL_PATH = os.path.join(os.path.dirname(__file__), "models", "pest_identifier_model.h5")  # path to your trained model
-    IMAGE_SIZE = (224, 224)
-    TOP_K = 5
-
-    # ---------------------------
-    # CLASS NAMES (IP102)
-    # ---------------------------
-    CLASS_NAMES = {
-        0: "rice leaf roller", 1: "rice leaf caterpillar", 2: "paddy stem maggot",
-        3: "asiatic rice borer", 4: "yellow rice borer", 5: "rice gall midge",
-        6: "rice stemfly", 7: "brown plant hopper", 8: "white backed plant hopper",
-        9: "small brown plant hopper", 10: "rice water weevil", 11: "rice leafhopper",
-        12: "grain spreader thrips", 13: "rice shell pest", 14: "grub",
-        15: "mole cricket", 16: "wireworm", 17: "white margined moth",
-        18: "black cutworm", 19: "large cutworm", 20: "yellow cutworm",
-        21: "red spider", 22: "corn borer", 23: "army worm", 24: "aphids",
-        25: "Potosiabre vitarsis", 26: "peach borer", 27: "english grain aphid",
-        28: "green bug", 29: "bird cherry-oat aphid", 30: "wheat blossom midge",
-        31: "penthaleus major", 32: "longlegged spider mite", 33: "wheat phloeothrips",
-        34: "wheat sawfly", 35: "cerodonta denticornis", 36: "beet fly",
-        37: "flea beetle", 38: "cabbage army worm", 39: "beet army worm",
-        40: "beet spot flies", 41: "meadow moth", 42: "beet weevil",
-        43: "serica orientalis motschulsky", 44: "alfalfa weevil", 45: "flax budworm",
-        46: "alfalfa plant bug", 47: "tarnished plant bug", 48: "Locustoidea",
-        49: "lytta polita", 50: "legume blister beetle", 51: "blister beetle",
-        52: "therioaphis maculata Buckton", 53: "odontothrips loti", 54: "Thrips",
-        55: "alfalfa seed chalcid", 56: "Pieris canidia", 57: "Apolygus lucorum",
-        58: "Limacodidae", 59: "Viteus vitifoliae", 60: "Colomerus vitis",
-        61: "Brevipoalpus lewisi McGregor", 62: "oides decempunctata",
-        63: "Polyphagotarsonemus latus", 64: "Pseudococcus comstocki Kuwana",
-        65: "parathrene regalis", 66: "Ampelophaga", 67: "Lycorma delicatula",
-        68: "Xylotrechus", 69: "Cicadella viridis", 70: "Miridae",
-        71: "Trialeurodes vaporariorum", 72: "Erythroneura apicalis", 73: "Papilio xuthus",
-        74: "Panonchus citri McGregor", 75: "Phyllocoptes oleiverus ashmead",
-        76: "Icerya purchasi Maskell", 77: "Unaspis yanonensis", 78: "Ceroplastes rubens",
-        79: "Chrysomphalus aonidum", 80: "Parlatoria zizyphus Lucus",
-        81: "Nipaecoccus vastalor", 82: "Aleurocanthus spiniferus",
-        83: "Tetradacus c Bactrocera minax", 84: "Dacus dorsalis(Hendel)",
-        85: "Bactrocera tsuneonis", 86: "Prodenia litura", 87: "Adristyrannus",
-        88: "Phyllocnistis citrella Stainton", 89: "Toxoptera citricidus",
-        90: "Toxoptera aurantii", 91: "Aphis citricola Vander Goot",
-        92: "Scirtothrips dorsalis Hood", 93: "Dasineura sp",
-        94: "Lawana imitata Melichar", 95: "Salurnis marginella Guerr",
-        96: "Deporaus marginatus Pascoe", 97: "Chlumetia transversa",
-        98: "Mango flat beak leafhopper", 99: "Rhytidodera bowrinii white",
-        100: "Sternochetus frigidus", 101: "Cicadellidae"
-    }
-    CLASS_LIST = [CLASS_NAMES[i] for i in range(len(CLASS_NAMES))]
-
-
-    # ---------------------------
-    # HELPER FUNCTIONS
-    # ---------------------------
-    @st.cache_resource
-    def load_model():
-        if not os.path.exists(MODEL_PATH):
-            st.error(f"Model file not found at: {MODEL_PATH}")
-            st.stop()
-        model = tf.keras.models.load_model(MODEL_PATH)
-        return model
-
-
-    def preprocess_image(image):
-        image = image.convert("RGB")
-        image = image.resize(IMAGE_SIZE)
-        img_array = np.array(image) / 255.0
-        img_array = np.expand_dims(img_array, axis=0)
-        return img_array
-
-
-    def predict(model, img_array):
-        preds = model.predict(img_array)
-        preds = tf.nn.softmax(preds).numpy().flatten()
-        return preds
-
-
-    def top_k_predictions(preds, k=TOP_K):
-        idxs = np.argsort(preds)[::-1][:k]
-        return [(CLASS_LIST[i], preds[i]) for i in idxs]
-
-
-    # ---------------------------
-    # STREAMLIT APP
-    # ---------------------------
-    st.set_page_config(page_title="Pest Identification", layout="wide")
-    st.title("🪲 AI Pest Species Identification (IP102)")
-    st.write("Upload an image of a pest to identify its species using a trained CNN model.")
-
-    col1, col2 = st.columns([1, 2])
-
-    with col1:
-        uploaded_file = st.file_uploader("Upload pest image", type=["jpg", "jpeg", "png"])
-        st.info("The model predicts one of 102 pest species from the IP102 dataset.")
-
-    with col2:
-        if uploaded_file:
-            image = Image.open(uploaded_file)
-            st.image(image, caption="Uploaded Image", use_container_width=True)
-
-            model = load_model()
-            img_array = preprocess_image(image)
-            preds = predict(model, img_array)
-            topk = top_k_predictions(preds)
-
-            top_pred, top_prob = topk[0]
-            st.subheader(f"Prediction: **{top_pred}** ({top_prob * 100:.2f}%)")
-
-            df = pd.DataFrame(topk, columns=["Pest", "Probability"])
-            chart = alt.Chart(df).mark_bar().encode(
-                x=alt.X("Pest", sort="-y"),
-                y="Probability",
-                color="Pest"
-            )
-            st.altair_chart(chart, use_container_width=True)
-
-            st.write("**Top Predictions**")
-            df["Probability (%)"] = (df["Probability"] * 100).round(2)
-            st.dataframe(df[["Pest", "Probability (%)"]])
-        else:
-            st.warning("Please upload an image to start.")
-
-    st.markdown("---")
-    st.caption("This demo uses a CNN trained on the IP102 pest dataset. Always verify results with expert agronomists.")
-'''
 with tab3:
     import os
     import streamlit as st
