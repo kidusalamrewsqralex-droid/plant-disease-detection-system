@@ -8,6 +8,7 @@ import joblib
 import urllib.parse
 import tensorflow as tf
 from sklearn.preprocessing import StandardScaler
+st.title("GREEN HAND")
 st.set_page_config(page_title="GREEN HAND", page_icon="🌱", layout="centered")
 # -------------------------
 # Tabs
@@ -421,7 +422,6 @@ with tab3:
     # ================================
     # 🌾 Streamlit UI
     # ================================
-    st.title("🌾 Crop Yield Prediction App")
     st.write("Predict estimated crop yield based on environmental and farming conditions.")
 
     # -------------------------------
@@ -520,7 +520,7 @@ with tab4:
 
     st.markdown(about_text)
     st.write("Developer: Kidus Alamrew")
-    
+
     import streamlit as st
     import urllib.parse
 
@@ -533,7 +533,7 @@ with tab4:
     # Use markdown link for reliable behavior
     st.markdown(f"[📧 Contact Developer]({gmail_link})", unsafe_allow_html=True)
 
-    
+
 
 
 
