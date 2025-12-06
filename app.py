@@ -8,8 +8,9 @@ import joblib
 import urllib.parse
 import tensorflow as tf
 from sklearn.preprocessing import StandardScaler
-st.title("GREEN HAND")
+
 st.set_page_config(page_title="GREEN HAND", page_icon="🌱", layout="centered")
+st.title("GREEN HAND")
 # -------------------------
 # Tabs
 # -------------------------
