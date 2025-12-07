@@ -392,6 +392,7 @@ with tab3:
     # Paths to model files
     # --------------------------
     BASE_DIR = os.path.dirname(__file__)
+    st.title("🌾CropCast")
     MODEL_PATH = os.path.join(BASE_DIR, "models", "crop_yield_model.pkl")
     SCALER_PATH = os.path.join(BASE_DIR, "models", "scaler.pkl")
     ENCODERS_PATH = os.path.join(BASE_DIR, "models", "label_encoders.pkl")
