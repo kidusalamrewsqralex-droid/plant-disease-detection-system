@@ -22,7 +22,7 @@
 
 
 ## How to Run Locally
-1. 1. Make sure all project files (including `app.py`, `requirements.txt`, and model files) are in the same folder.  
+1. Make sure all project files (including `app.py`, `requirements.txt`, and model files) are in the same folder.  
 2. Create and activate a virtual environment:  
   run this on your command prompt: python -m venv venv
    # On macOS/Linux
