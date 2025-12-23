@@ -1,4 +1,6 @@
 __pycache__/
 .venv/
+venv/
 tfenv/
 users.json
+uploads/
