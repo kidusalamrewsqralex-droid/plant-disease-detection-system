@@ -6,7 +6,6 @@ from tensorflow.keras.models import load_model
 from PIL import Image
 from auth import require_login
 
-require_login()
 
 # -----------------------------
 # Load Model (cached for performance)
@@ -18,6 +17,7 @@ def load_my_model():
 
 model = load_my_model()
 
+require_login()
 # -----------------------------
 # Class names
 # -----------------------------
