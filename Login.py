@@ -2,18 +2,12 @@ import streamlit as st
 import hashlib
 import json
 import os
-
-# -----------------------
-# Paths & Admin Account
-# -----------------------
+import pandas as pd
 USERS_FILE = "users.json"
 ADMIN_USERNAME = "admin"
-ADMIN_PASSWORD = "admin123"  # <-- Set your admin password here
+ADMIN_PASSWORD = "admin123"
 
 
-# -----------------------
-# Helper Functions
-# -----------------------
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
 
@@ -30,9 +24,6 @@ def save_users(users):
         json.dump(users, f, indent=4)
 
 
-# -----------------------
-# Streamlit Session State
-# -----------------------
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 if "username" not in st.session_state:
@@ -41,16 +32,29 @@ if "role" not in st.session_state:
     st.session_state.role = ""
 
 
-# -----------------------
-# Login Function
-# -----------------------
 def login(username, password):
     users = load_users()
     if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
+
+        st.header("🛠 Admin Dashboard")
+        st.write(f"Logged in as Admin: {st.session_state.username}")
+
+            # Load users
+        users = load_users()  # This is your function that reads users.json
+
+        if users:
+            st.subheader("Registered Users")
+                # Convert to DataFrame for nice display
+            df_users = pd.DataFrame([
+                    {"Username": u, "Role": info["role"]} for u, info in users.items()
+                ])
+            st.dataframe(df_users)
+        else:
+            st.write("No users registered yet.")
+
         st.session_state.logged_in = True
         st.session_state.username = ADMIN_USERNAME
         st.session_state.role = "admin"
-        st.success(f"Logged in as Admin ✅")
         return True
     elif username in users and hash_password(password) == users[username]["password"]:
         st.session_state.logged_in = True
@@ -63,9 +67,6 @@ def login(username, password):
         return False
 
 
-# -----------------------
-# Signup Function
-# -----------------------
 def signup(username, password):
     if username == ADMIN_USERNAME:
         st.error("❌ This username is reserved for admin")
@@ -79,9 +80,6 @@ def signup(username, password):
     st.success("Signup successful! You can now log in.")
 
 
-# -----------------------
-# Logout Function
-# -----------------------
 def logout():
     st.session_state.logged_in = False
     st.session_state.username = ""
@@ -89,19 +87,12 @@ def logout():
     st.success("Logged out successfully ✅")
 
 
-# -----------------------
-# Streamlit App UI
-# -----------------------
 st.title("🌱 GREEN HAND LOGIN SYSTEM")
 
+# Display login/signup or home UI depending on session state
 if st.session_state.logged_in:
-    st.session_state.logged_in = True
-    st.session_state.username = username
-    st.experimental_rerun()
     st.write(f"Welcome, **{st.session_state.username}**! Role: {st.session_state.role}")
     if st.button("Logout"):
-        st.session_state.clear()
-        st.switch_page("Login.py")
         logout()
 else:
     choice = st.radio("Login / Signup", ["Login", "Signup"])
@@ -110,7 +101,7 @@ else:
         username = st.text_input("Username")
         password = st.text_input("Password", type="password")
         if st.button("Login"):
-            login(username, password)
+            login(username, password)  # Session state changes immediately take effect
 
     elif choice == "Signup":
         username = st.text_input("Choose a username")
@@ -121,7 +112,3 @@ else:
                 st.error("❌ Passwords do not match")
             else:
                 signup(username, password)
-if not st.session_state.get("logged_in", False):
-    st.switch_page("login.py")
-else:
-    st.switch_page("pages/Home.py")
