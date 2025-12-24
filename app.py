@@ -82,7 +82,8 @@ def logout():
 
 # ---------------- UI ----------------
 st.title("🌱 GREEN HAND LOGIN SYSTEM")
-
+if "redirected" in st.query_params:
+    st.warning("🔒 Please log in to access that page.")
 if st.session_state.logged_in:
 
     st.success(f"Welcome, {st.session_state.username} 👋")
