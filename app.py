@@ -25,10 +25,8 @@ def load_users():
             with open(USERS_FILE, "r") as f:
                 return json.load(f)
         except json.JSONDecodeError:
-            # File exists but is empty or invalid → start fresh
             return {}
     return {}
-
 
 def save_users(users):
     with open(USERS_FILE, "w") as f:
@@ -37,14 +35,12 @@ def save_users(users):
 # ---------------- SESSION STATE ----------------
 if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
-
 if "username" not in st.session_state:
     st.session_state.username = ""
-
 if "role" not in st.session_state:
     st.session_state.role = ""
 
-# ---------------- AUTH LOGIC (NO UI HERE) ----------------
+# ---------------- AUTH LOGIC ----------------
 def login(username, password):
     users = load_users()
 
@@ -58,10 +54,24 @@ def login(username, password):
         st.session_state.logged_in = True
         st.session_state.username = username
         st.session_state.role = "user"
+
+        # Mark this user as last logged in
+        for u in users:
+            users[u]["last_logged_in"] = (u == username)
+        save_users(users)
         return True
 
     st.error("❌ Invalid username or password")
     return False
+
+def auto_login():
+    users = load_users()
+    for username, info in users.items():
+        if info.get("last_logged_in", False):
+            st.session_state.logged_in = True
+            st.session_state.username = username
+            st.session_state.role = info.get("role", "user")
+            break
 
 def signup(username, password):
     if username == ADMIN_USERNAME:
@@ -75,20 +85,40 @@ def signup(username, password):
 
     users[username] = {
         "password": hash_password(password),
-        "role": "user"
+        "role": "user",
+        "last_logged_in": True  # auto-login after signup
     }
+    # Set all other users as not logged in
+    for u in users:
+        if u != username:
+            users[u]["last_logged_in"] = False
     save_users(users)
-    st.success("✅ Signup successful! You can now log in.")
+
+    st.success("✅ Signup successful! You are now logged in.")
+    st.session_state.logged_in = True
+    st.session_state.username = username
+    st.session_state.role = "user"
 
 def logout():
     st.session_state.logged_in = False
     st.session_state.username = ""
     st.session_state.role = ""
 
+    users = load_users()
+    for u in users:
+        users[u]["last_logged_in"] = False
+    save_users(users)
+
+# ---------------- AUTO LOGIN ----------------
+if not st.session_state.logged_in:
+    auto_login()
+
 # ---------------- UI ----------------
 st.title("🌱 GREEN HAND LOGIN SYSTEM")
+
 if "redirected" in st.query_params:
     st.warning("🔒 Please log in to access that page.")
+
 if st.session_state.logged_in:
 
     st.success(f"Welcome, {st.session_state.username} 👋")
@@ -96,13 +126,9 @@ if st.session_state.logged_in:
     # ---------- ADMIN DASHBOARD ----------
     if st.session_state.role == "admin":
         st.header("🛠 Admin Dashboard")
-
         users = load_users()
         if users:
-            df = pd.DataFrame([
-                {"Username": u, "Role": info["role"]}
-                for u, info in users.items()
-            ])
+            df = pd.DataFrame([{"Username": u, "Role": info["role"]} for u, info in users.items()])
             st.dataframe(df)
         else:
             st.write("No users registered yet.")
