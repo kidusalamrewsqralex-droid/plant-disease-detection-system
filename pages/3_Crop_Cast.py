@@ -4,26 +4,36 @@ import streamlit as st
 import joblib
 from auth import require_login
 
+# --------------------------
+# Require login
+# --------------------------
 require_login()
 
 # --------------------------
 # Paths to model files
 # --------------------------
-BASE_DIR = os.path.dirname(__file__)
-st.title("🌾CropCast")
-MODEL_PATH = os.path.join(BASE_DIR, "models", "crop_yield_model.pkl")
-SCALER_PATH = os.path.join(BASE_DIR, "models", "scaler.pkl")
-ENCODERS_PATH = os.path.join(BASE_DIR, "models", "label_encoders.pkl")
+st.title("🌾 CropCast")
+
+MODEL_DIR = "models"
+MODEL_PATH = os.path.join(MODEL_DIR, "crop_yield_model.pkl").strip()
+SCALER_PATH = os.path.join(MODEL_DIR, "scaler.pkl").strip()
+ENCODERS_PATH = os.path.join(MODEL_DIR, "label_encoders.pkl").strip()
 
 # --------------------------
 # Load models, scaler, encoders
 # --------------------------
 @st.cache_resource
 def load_models():
-    missing_files = [p for p in [MODEL_PATH, SCALER_PATH, ENCODERS_PATH] if not os.path.exists(p)]
+    paths = [MODEL_PATH, SCALER_PATH, ENCODERS_PATH]
+
+    
+    # Check for missing files
+    missing_files = [p for p in paths if not os.path.exists(p)]
     if missing_files:
         st.error(f"❌ Missing model files: {', '.join(os.path.basename(f) for f in missing_files)}")
         return None, None, None
+
+    # Try loading
     try:
         model = joblib.load(MODEL_PATH)
         scaler = joblib.load(SCALER_PATH)
@@ -36,6 +46,15 @@ def load_models():
 model, scaler, encoders = load_models()
 if model is None or scaler is None or encoders is None:
     st.stop()
+
+# --------------------------
+# Check all required encoders exist
+# --------------------------
+required_encoders = ["Region", "Soil_Type", "Crop", "Weather_Condition", "Fertilizer_Used", "Irrigation_Used"]
+for key in required_encoders:
+    if key not in encoders:
+        st.error(f"❌ Missing label encoder for: {key}")
+        st.stop()
 
 # ================================
 # 🌾 Streamlit UI
@@ -50,9 +69,9 @@ soil_type = st.selectbox("Soil Type", encoders["Soil_Type"].classes_)
 crop = st.selectbox("Crop", encoders["Crop"].classes_)
 weather = st.selectbox("Weather Condition", encoders["Weather_Condition"].classes_)
 
-# ✅ Toggles for Boolean Inputs
-fertilizer_used = st.toggle("Fertilizer Used?")
-irrigation_used = st.toggle("Irrigation Used?")
+# ✅ Checkboxes for Boolean Inputs
+fertilizer_used = st.checkbox("Fertilizer Used?")
+irrigation_used = st.checkbox("Irrigation Used?")
 
 fertilizer_value = "Yes" if fertilizer_used else "No"
 irrigation_value = "Yes" if irrigation_used else "No"
@@ -79,7 +98,7 @@ try:
     numeric_features_scaled = scaler.transform(numeric_features)
 
     # Combine categorical + scaled numeric features in training order
-    features = np.array([[
+    features = np.array([[ 
         region_encoded,
         soil_encoded,
         crop_encoded,
