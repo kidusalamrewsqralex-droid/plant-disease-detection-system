@@ -61,7 +61,7 @@ def login(username, password):
         save_users(users)
         return True
 
-    st.error("❌ Invalid username or password")
+    st.error("❌ Invalid username or password / የተጠቃሚ ስም ወይም የይለፍ ቃል ትክክል አይደለም")
     return False
 
 def auto_login():
@@ -75,12 +75,12 @@ def auto_login():
 
 def signup(username, password):
     if username == ADMIN_USERNAME:
-        st.error("❌ This username is reserved")
+        st.error("❌ This username is reserved / ይህ የተጠቃሚ ስም ተይዟል")
         return
 
     users = load_users()
     if username in users:
-        st.error("❌ Username already exists")
+        st.error("❌ Username already exists / የተጠቃሚ ስሙ አስቀድሞ አለ")
         return
 
     users[username] = {
@@ -94,7 +94,7 @@ def signup(username, password):
             users[u]["last_logged_in"] = False
     save_users(users)
 
-    st.success("✅ Signup successful! You are now logged in.")
+    st.success("✅ Signup successful! You are now logged in. / መመዝገብ ተሳክቷል! አሁን ገብተዋል።")
     st.session_state.logged_in = True
     st.session_state.username = username
     st.session_state.role = "user"
@@ -117,11 +117,11 @@ if not st.session_state.logged_in:
 st.title("🌱 GREEN HAND LOGIN SYSTEM")
 
 if "redirected" in st.query_params:
-    st.warning("🔒 Please log in to access that page.")
+    st.warning("🔒 Please log in to access that page. / ይህን ገጽ ለመጠቀም እባክዎ ይግቡ")
 
 if st.session_state.logged_in:
 
-    st.success(f"Welcome, {st.session_state.username} 👋")
+    st.success(f"Welcome, {st.session_state.username} 👋 / እንኳን በደህና መጡ, {st.session_state.username} 👋")
 
     # ---------- ADMIN DASHBOARD ----------
     if st.session_state.role == "admin":
@@ -135,30 +135,30 @@ if st.session_state.logged_in:
 
     # ---------- USER DASHBOARD ----------
     else:
-        st.header("👤 User Dashboard")
-        st.write("You are logged in as a normal user.")
+        st.header("👤 User Dashboard / የተጠቃሚ መቆጣጠሪያ ገጽ")
+        st.write("You are logged in as a normal user / እንደ መደበኛ ተጠቃሚ ገብተዋል")
 
-    if st.button("Logout"):
+    if st.button("Logout / ይውጡ"):
         logout()
 
 # ---------------- LOGIN / SIGNUP ----------------
 else:
-    choice = st.radio("Login / Signup", ["Login", "Signup"])
+    choice = st.radio("Login / Signup", ["Login / ይግቡ", "Signup / ይመዝገቡ"])
 
-    if choice == "Login":
-        username = st.text_input("Username")
-        password = st.text_input("Password", type="password")
+    if choice == "Login / ይግቡ":
+        username = st.text_input("Username / የተጠቃሚ ስም")
+        password = st.text_input("Password / የይለፍ ቃል", type="password")
 
-        if st.button("Login"):
+        if st.button("Login / ይግቡ"):
             login(username, password)
 
     else:
-        username = st.text_input("Choose a username")
-        password = st.text_input("Choose a password", type="password")
-        confirm = st.text_input("Confirm password", type="password")
+        username = st.text_input("Choose a username / የተጠቃሚ ስም ይምረጡ")
+        password = st.text_input("Choose a password / የይለፍ ቃል ይምረጡ", type="password")
+        confirm = st.text_input("Confirm password / የይለፍ ቃልዎን ያረጋግጡ", type="password")
 
-        if st.button("Sign Up"):
+        if st.button("Sign Up / ይመዝገቡ"):
             if password != confirm:
-                st.error("❌ Passwords do not match")
+                st.error("❌ Passwords do not match / የይለፍ ቃል አይመሳሰልም")
             else:
                 signup(username, password)
