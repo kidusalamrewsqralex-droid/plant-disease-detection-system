@@ -329,35 +329,40 @@ with tab1:
     # -----------------------------
     # Streamlit UI
     # -----------------------------
-
+    camera_image = st.camera_input(
+        "📷 Take a photo of the plant leaf (በካሜራ ምስል ይውሰዱ)",
+        key="  camera_leaf"
+    )
     uploaded_file1 = st.file_uploader("Upload plant image (የተክል ምስል ይጫኑ):", type=["jpg", "jpeg", "png"])
 
-    if uploaded_file1 and model:
+    image_to_process = None
+
+    if camera_image is not None:
+        image_to_process = Image.open(camera_image).convert("RGB")
+        st.image(image_to_process, caption="Captured Image", use_container_width=True)
+
+    elif uploaded_file1 is not None:
+        image_to_process = Image.open(uploaded_file1).convert("RGB")
+        st.image(image_to_process, caption="Uploaded Image", use_container_width=True)
+
+    if image_to_process is not None:
         try:
-            # Load image
-            img = Image.open(uploaded_file1).convert("RGB")
-            st.image(img, caption="Uploaded Image (የተጫነ ምስል)", use_container_width=True)
+            x = preprocess_image(image_to_process)
 
-            # Preprocess
-            x = preprocess_image(img)
-
-            # Predict
             with st.spinner("Analyzing image (ምስሉን በመተንተን ላይ)..."):
                 preds = model.predict(x)
                 pred_idx = np.argmax(preds)
+                confidence = float(np.max(preds))
                 pred_class = class_names[pred_idx]
-                confidence = np.max(preds)
 
-            # Display results
-            st.success(f"Prediction (ግምት ውጤት): {pred_class}")
-            st.write(f"Confidence (የመተማመን መጠን): {confidence:.2f}")
-
-            # Show disease info
+            st.success(f"🦠 Prediction: **{pred_class}**")
+            st.info(f"📊 Confidence: **{confidence:.2%}**")
             with st.expander("💬 Disease Info (የበሽታ መረጃ)"):
-                response = disease_responses.get(pred_class, "No additional info available(ተጨማሪ መረጃ አልተገኘም).")
-                st.markdown(response)
+                st.markdown(disease_responses.get(pred_class, "No information available."))
+        
+
         except Exception as e:
-            st.error(f"Prediction error (የግምት ስህተት): {e}")
+            st.error(f"Prediction error: {e}")
 
 with tab2:
     @st.cache_resource
@@ -387,38 +392,41 @@ with tab2:
         return x
 
 
-    # -----------------------------
-    # Streamlit UI
-    # -----------------------------
+    camera_image = st.camera_input(
+        "📷 Take a photo of the plant leaf (በካሜራ ምስል ይውሰዱ)",
+        key="camera_leaf"
+    )
 
     uploaded_file2= st.file_uploader("Upload an image of your plant's leaf (የተክልዎን ቅጠል ምስል ይጫኑ) :", type=["jpg", "jpeg", "png"])
 
-    if uploaded_file2 and model:
-        try:
-            # Load image
-            img = Image.open(uploaded_file2).convert("RGB")
-            st.image(img, caption="Uploaded Image (የተጫነ ምስል)", use_container_width=True)
+    image_to_process = None
 
-            # Preprocess
-            x = preprocess_image(img)
+    if camera_image is not None:
+        image_to_process = Image.open(camera_image).convert("RGB")
+        st.image(image_to_process, caption="Captured Image", use_container_width=True)
+
+    elif uploaded_file2 is not None:
+        image_to_process = Image.open(uploaded_file2).convert("RGB")
+        st.image(image_to_process, caption="Uploaded Image", use_container_width=True)
+
+    if image_to_process is not None:
+        try:
+            x = preprocess_image(image_to_process)
+
             interpreter.set_tensor(input_details[0]["index"], x)
             interpreter.invoke()
 
-            # Predict
             with st.spinner("Analyzing image (ምስሉን በመተንተን ላይ)..."):
                 preds = interpreter.get_tensor(output_details[0]["index"])
                 pred_idx = np.argmax(preds)
                 pred_class = class_names[pred_idx]
-                confidence = np.max(preds)
+                confidence = float(np.max(preds))
 
-            # Display results
-            st.success(f"Prediction (ግምት ውጤት): {pred_class}")
-            st.write(f"Confidence (የመተማመን መጠን): {confidence:.2f}")
-
-            # Show disease info
+            st.success(f"🦠 Prediction: **{pred_class}**")
+            st.info(f"📊 Confidence: **{confidence:.2%}**")
             with st.expander("💬 Disease Info (የበሽታ መረጃ)"):
-                response = disease_responses.get(pred_class, "No additional info available.")
-                st.markdown(response)
+                st.markdown(disease_responses.get(pred_class, "No information available."))
 
         except Exception as e:
-            st.error(f"Prediction error (የግምት ስህተት): {e}")
+            st.error(f"Prediction error: {e}")
+            
