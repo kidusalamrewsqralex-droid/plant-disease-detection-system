@@ -27,7 +27,7 @@
 run code: pip install -r requirements.txt
 4. Run the app:
 run code: streamlit run app.py
-5.Open the URL provided in the terminal (usually http://localhost:8501) in a web browser to use the app.
+5. Open the URL provided in the terminal (usually http://localhost:8501) in a web browser to use the app.
 
 #### Here is the link to my web-app(to access online):https://plant-disease-detection-system-amhcwzukw24svryvcveckt.streamlit.app/
 NOTICE:when you try to access the app online,if it says that the app has been put to a sleep,click the "yes wake my app" button.
